@@ -1,20 +1,67 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Button, TextInput,View } from 'react-native';
+import ToDoList from './components/ToDoList';
 
-export default function App() {
+
+function App() {
+  const [tasks, setTasks ] = useState(
+    [
+      'Do laundry',
+      'Go to gym',
+      'Walk dog'
+    ]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTasks([...tasks, newTask]);
+      setNewTask('');
+  }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ToDoList tasks={tasks} />
+      <View style={styles.form}>
+        <TextInput
+          style={styles.input}
+          placeholder="Add a new task..."
+          value={newTask}
+          onChangeText={setNewTask}
+        />
+        <Button title="Add" onPress={addTask} />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  task: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+  completed: {
+    backgroundColor: '#e0e0e0',
+  },
+  taskText: {
+    fontSize: 16,
+  },
+  form: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginRight: 10,
   },
 });
+
+export default App;
